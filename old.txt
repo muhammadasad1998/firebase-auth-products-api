@@ -1,0 +1,40 @@
+import React, { useEffect, useState } from 'react'
+import MediaCard from '../components/Cards/Cards';
+import axios from 'axios';
+
+const Products = () => {
+    const [products, setProducts] = useState([]);
+    // Fetch products data on component mount
+    useEffect(() => {
+        // using manual  fetch request instead of axios to demonstrate how it can be done without a library.
+        // fetch('https://fakestoreapi.com/products')
+        //     .then((response) => response.json())
+        //     .then((data) => setProducts(data));
+        getData()
+    }, []);
+
+    const getData = ()=>{
+        const data = axios.get("https://fakestoreapi.com/products").then((res) => {
+            console.log(res.data);
+            setProducts(res.data)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+  return (
+    <>
+    <div className="flex flex-wrap gap-3 mt-10">
+
+    {
+        products.map((e,i)=>{
+            return(
+                <MediaCard key={i} image={e.image} desc={e.description} title={e.title} price={e.price}/>
+                )
+            })
+        }
+        </div>
+    </>
+  )
+}
+
+export default Products
